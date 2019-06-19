@@ -1,101 +1,78 @@
-CREATE VIEW 商品 --创建商品信息视图
+CREATE VIEW GOODS --创建商品目录视图
 AS
-SELECT TID,Tname,TPrice,TWeight,Tpdate,Tkdate,TNorms
+SELECT TID, TName, TPrice, TWeight, Tpdate, Tkdate, TNorms
 FROM T
 
 
-CREATE VIEW 商品与供货商 --商品供应商信息视图
+CREATE VIEW GOODS_SUPPLIER --商品供应商信息视图
 AS
-SELECT T.TID,Tname,TPrice,TWeight,Tpdate,Tkdate,TNorms,Sname,ST.SCodename,SAddress,Stele,SFax
-FROM T,S,ST
-where T.TID=ST.TID and ST.SCodename=S.SCodename
+SELECT ST.SID, Sname, SAddress, Stele, SFax, T.TID, Tname, TPrice, TWeight, Tpdate, Tkdate, TNorms
+FROM T, S, ST
+where T.TID = ST.TID and ST.SID = S.SID
 
-CREATE VIEW 供应商信息 --供应商信息视图
+
+
+CREATE VIEW SUPPLIER --供应商信息视图
 AS
-SELECT SCodename ,SName,SAddress ,Stele,Sfax
+SELECT SID, SName, SAddress, Stele, Sfax
 FROM S
 
 
-CREATE VIEW 仓库信息 --仓库信息视图
+CREATE VIEW STOREHOUSE --仓库信息视图
 AS
-SELECT KNO,KNum,KHnum,KDnum,kperson
+SELECT KID, KNum, KHnum, KDnum, KPersonName, KPersonTele
 FROM K
 
 
-
-CREATE VIEW 员工信息 --员工信息视图
+CREATE VIEW STAFF --员工信息视图
 AS
-SELECT YID,Yname,YSEX,Yage,Yzhichen
+SELECT YID,Yname,YSEX,Yage,YZhiCheng
 FROM Y
+WHERE YStatus = '0'
 
 
-
-CREATE view 会员信息 --查询会员信息视图
+CREATE view MEMBER --查询会员信息视图
 AS
-SELECT GName,GSex,GNums,GNum
+SELECT GID, GName, GSex, GAge, GNum, GPhone
 FROM G
+WHERE G.GStatus = '0'
 
 
 
-create view 各订单总额(Dnum, PPrice) --订单总价视图
+create view  MEMBER_BOOK       --用户订单视图
 as
-select top(100)percent Dnum=D.Dnum,
-                       PPrice=SUM(Dnums*TPrice)
-from D
-group by D.Dnum
+select GT.GID, GT.TID, T.TPrice, GT.GTQY, GT.GTQDate
+from GT, T
+WHERE GT.TID = T.TID
 
 
+create view MEMBER_TOTALPRICE(GID, TotalPrice)  --创建客户订单总价视图
+AS
+select TID=MEMBER_BOOK.GID, TotalPrice = SUM(MEMBER_BOOK.GTQY*MEMBER_BOOK.TPrice)
+from MEMBER_BOOK
+GROUP BY MEMBER_BOOK.GID
 
-select * into SumP from 各订单总额 --将视图中的内容存下
 
-
-
-
-create view 总订单信息 --创建订单视图
+create view KT_INFO(KID,KNum) --各库库存总量
 as
-select SumP.Dnum,D.TID,Tname,Dnums,D.TPrice,SumP.PPrice,Ddate
-from D,T,SumP
-where D.TID=T.TID and SumP.Dnum=D.Dnum
-
-
-
-create view everyday(Ddate,PPrice)
-as
-select top(100)percent Ddate=D.Ddate,
-                       SUMPrice=SUM(Dnums*TPrice)
-from D
-group by D.Ddate
-
-
-create view 盘点
-as
-select D.Ddate, D.TID, T.Tname, D.DNums, D.TPrice, everyday.PPrice
-from D, T, everyday
-where D.TID=T.TID and D.Ddate = everyday.Ddate
-
-
-
-create view 各库存信息(KNO,KNUM) --各库库存总量
-as
-select top(100)percent KNO=KT.KNO,
-                       KNUM=sum(KT.QTY)
+select KID=KT.KID, KNum=sum(KT.QTY)
 from KT
-group by KT.KNO
+group by KT.KID
 
-
+select * from ST
 
 CREATE VIEW 退货单与供货商
 AS
-SELECT PNO,P.TID,T.Tname,Pnums,PPrice,TNorms,Pdate,Sname,ST.SCodename,SAddress,Stele,SFax
-FROM T,S,ST,P
-where T.TID=ST.TID and ST.SCodename=S.SCodename and T.TID=P.TID
+SELECT PT.PTID, PT.TID, T.Tname, PNum, PPrice, TNorms, Pdate, Sname, ST.SID, SAddress, Stele, SFax
+FROM T, S, ST, PT
+where T.TID=ST.TID and ST.SID=S.SID and T.TID=PT.TID
 
 
 CREATE VIEW 进货单与供货商
 AS
-SELECT ZNO,Z.TID,T.Tname,Znums,ZPrice,TNorms,Zdate,Tpdate,Tkdate,Sname,ST.SCodename,SAddress,Stele,SFax
-FROM T,S,ST,Z
-where T.TID=ST.TID and ST.SCodename=S.SCodename and T.TID=Z.TID
+SELECT ZT.ZTID,ZT.TID,T.Tname,ZNum, ZPrice, TNorms, Zdate, Tpdate, Tkdate, Sname, ST.SID, SAddress, Stele, SFax
+FROM T,S,ST,ZT
+where T.TID=ST.TID and ST.SID=S.SID and T.TID=Z.TID
 
 
 
@@ -116,6 +93,3 @@ select top(100)percent TID=D.TID,
 from D,T
 where D.TPrice=T.TPrice
 group by D.TID
-
-
-select * from everyday
