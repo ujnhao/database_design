@@ -28,7 +28,17 @@
     <option name="HIDDEN_KINDS">
       <set />
     </option>
-    <expand />
+    <expand>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="@39.106.216.25" type="feb32156:DbDataSourceImpl" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="@39.106.216.25" type="feb32156:DbDataSourceImpl" />
+        <item name="supermarket: database" type="ccb7ac2a:MsImplModel$Database" />
+      </path>
+    </expand>
     <select />
   </component>
   <component name="FileEditorManager">
@@ -172,11 +182,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/design/supermarket/create_goods.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-20" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/design/supermarket/view.sql">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1931" />
@@ -236,6 +241,12 @@
           <caret column="2" selection-start-column="2" selection-end-column="2" />
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/design/supermarket/create_goods.sql">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/549fadc9-8324-4135-a304-8af818e2a389/console_6.sql">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
 </project>
