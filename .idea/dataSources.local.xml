@@ -9,7 +9,7 @@
       <case-sensitivity plain-identifiers="mixed" quoted-identifiers="mixed" />
       <secret-storage>master_key</secret-storage>
       <user-name>SA</user-name>
-      <introspection-schemas>@:@</introspection-schemas>
+      <introspection-schemas>@:@|supermarket:</introspection-schemas>
     </data-source>
   </component>
 </project>
