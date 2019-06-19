@@ -1,12 +1,13 @@
 create table T(
                 TID BIGINT primary key,
                 Tname CHAR(20) NOT NULL,
-                TPrice INT NOT NULL,
-                Tpdate TIMESTAMP NOT NULL,       --生产日期
+                TPrice INT NOT NULL,        --商品进价
+                Tpdate DATETINE NOT NULL,  --生产日期
                 TKdate INT NOT NULL,        --保质期
                 TWeight INT NOT NULL,       --产品重量
                 TNorms CHAR(20),            --类型
                 TProducename CHAR(20),      --生产厂家
+                TSellPrice INT NOT NULL,    --商品售价
 )
 
 create table S(
@@ -38,11 +39,11 @@ create table K(
 
 Create table G(
                 GID BIGINT primary key,            --顾客ID
-                GName CHAR(20) NOT NULL,        --顾客名
-                GSex CHAR(2),                   --顾客性别
-                GAge INT,                       --顾客年龄
-                GNum BIGINT NOT NULL DEFAULT 0, --顾客积分
-                GPhone CHAR(20) NOT NULL,       --顾客电话
+                GName CHAR(20) NOT NULL,           --顾客名
+                GSex CHAR(2),                      --顾客性别
+                GAge INT,                          --顾客年龄
+                GNum BIGINT NOT NULL DEFAULT 0,    --顾客积分
+                GPhone CHAR(20) NOT NULL,          --顾客电话
                 GStatus CHAR(1) NOT NULL DEFAULT '0', --顾客状态
 )
 
@@ -56,53 +57,53 @@ create table KT(                                         --仓库商品关系表
 )
 
 create table YT(
-                 YTID BIGINT IDENTITY(1, 1) primary key,
-                 YID BIGINT NOT NULL,
-                 TID BIGINT NOT NULL,
-                 SQTY INT NOT NULL,         --收银员销售的产品数量
+                 YTID BIGINT IDENTITY(1, 1) primary key,    --销售账单id
+                 YID BIGINT NOT NULL,                       --员工id
+                 TID BIGINT NOT NULL,                       --商品id
+                 SQTY INT NOT NULL,                         --收银员销售的产品数量
                  SQTDate DATETIME DEFAULT CURRENT_TIMESTAMP,
                  FOREIGN KEY (YID) REFERENCES Y(YID) ,
                  FOREIGN KEY (TID) REFERENCES T(TID),
 )
 
 create table ST(
-                STID BIGINT IDENTITY(1, 1) primary key,
-                SID BIGINT NOT NULL,    --供应商id
-                TID BIGINT NOT NULL,    --商品id
-                GQTY INT NOT NULL,      --供应商品数量
-                FOREIGN KEY (SID) REFERENCES S(SID) ,
-                FOREIGN KEY (TID) REFERENCES T(TID),
+                 STID BIGINT IDENTITY(1, 1) primary key,
+                 SID BIGINT NOT NULL,                       --供应商id
+                 TID BIGINT NOT NULL,                       --商品id
+                 GQTY INT NOT NULL,                         --供应商品数量
+                 FOREIGN KEY (SID) REFERENCES S(SID) ,
+                 FOREIGN KEY (TID) REFERENCES T(TID),
 )
 
 
-Create table GT (                       --顾客订单表
-                GTID BIGINT IDENTITY(1, 1) primary key,
-                GID BIGINT NOT NULL,
-                TID BIGINT NOT NULL,
-                GTQY INT NOT NULL,
-                GTQDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (GID) REFERENCES G(GID),
-                FOREIGN KEY (TID) REFERENCES T(TID),
+Create table GT (                                           --顾客订单表
+                  GTID BIGINT IDENTITY(1, 1) primary key,   --顾客订单id
+                  GID BIGINT NOT NULL,                      --顾客id
+                  TID BIGINT NOT NULL,                      --商品ID
+                  GTQY INT NOT NULL,                        --购买数量
+                  GTQDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  FOREIGN KEY (GID) REFERENCES G(GID),
+                  FOREIGN KEY (TID) REFERENCES T(TID),
 )
 
-Create table PT(              --从供应商进货订单表
-                PTID BIGINT IDENTITY(1, 1) primary key,
-                SID BIGINT NOT NULL,
-                TID BIGINT NOT NULL,
-                PNum INT NOT NULL,
-                PDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                PPrice INT NOT NULL,
-                FOREIGN KEY (SID) REFERENCES S(SID),
-                FOREIGN KEY (TID) REFERENCES T(TID),
+Create table PT(                                            --从供应商进货订单表
+                 PTID BIGINT IDENTITY(1, 1) primary key,
+                 SID BIGINT NOT NULL,
+                 TID BIGINT NOT NULL,
+                 PNum INT NOT NULL,
+                 PDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                 PPrice INT NOT NULL,
+                 FOREIGN KEY (SID) REFERENCES S(SID),
+                 FOREIGN KEY (TID) REFERENCES T(TID),
 )
 
-Create table ZT(            --将过期售量不好的产品退给供应商
-                ZTID BIGINT IDENTITY(1, 1) primary key ,
-                SID BIGINT NOT NULL,
-                TID BIGINT NOT NULL,
-                ZNum INT NOT NULL,
-                ZDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                ZPrice INT NOT NULL,
-                FOREIGN KEY (SID) REFERENCES S(SID),
-                FOREIGN KEY (TID) REFERENCES T(TID),
+Create table ZT(                                           --将过期售量不好的产品退给供应商
+                 ZTID BIGINT IDENTITY(1, 1) primary key ,
+                 SID BIGINT NOT NULL,
+                 TID BIGINT NOT NULL,
+                 ZNum INT NOT NULL,
+                 ZDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                 ZPrice INT NOT NULL,
+                 FOREIGN KEY (SID) REFERENCES S(SID),
+                 FOREIGN KEY (TID) REFERENCES T(TID),
 )
