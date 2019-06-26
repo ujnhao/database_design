@@ -2,7 +2,7 @@ create table T(
                 TID BIGINT primary key,
                 Tname CHAR(20) NOT NULL,
                 TPrice INT NOT NULL,        --商品进价
-                Tpdate DATETINE NOT NULL,  --生产日期
+                Tpdate DATETIME NOT NULL,  --生产日期
                 TKdate INT NOT NULL,        --保质期
                 TWeight INT NOT NULL,       --产品重量
                 TNorms CHAR(20),            --类型
@@ -78,6 +78,7 @@ create table ST(
 
 Create table GT (                                           --顾客订单表
                   GTID BIGINT IDENTITY(1, 1) primary key,   --顾客订单id
+                  BOOKID BIGINT NOT NULL,
                   GID BIGINT NOT NULL,                      --顾客id
                   TID BIGINT NOT NULL,                      --商品ID
                   GTQY INT NOT NULL,                        --购买数量
